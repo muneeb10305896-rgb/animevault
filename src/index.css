@@ -48,3 +48,15 @@ body {
 .search-type {
   max-width: 9rem;
 }
+
+/* Details screen */
+.synopsis {
+  white-space: pre-line; /* keeps the paragraph breaks from the API text */
+  max-width: 70ch;
+}
+
+.character-img {
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  object-fit: cover;
+}
