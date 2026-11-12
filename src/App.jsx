@@ -27,7 +27,7 @@ function App() {
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </Container>
-      <ToastContainer position="bottom-right" autoClose={2500} theme="colored" />
+      <ToastContainer position="bottom-right" autoClose={2500} limit={3} theme="colored" />
     </HashRouter>
   )
 }

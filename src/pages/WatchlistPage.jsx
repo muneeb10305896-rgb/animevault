@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Row, Col, Card, ListGroup, Button, ButtonGroup } from 'react-bootstrap'
+import { Row, Col, Card, ListGroup, Button } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import WatchlistItem from '../components/WatchlistItem.jsx'
@@ -71,7 +71,7 @@ function WatchlistPage({ watchlist }) {
         </Col>
 
         <Col lg={8}>
-          <ButtonGroup className="mb-3 flex-wrap" aria-label="Filter by status">
+          <div className="d-flex flex-wrap gap-2 mb-3" role="group" aria-label="Filter by status">
             {['All', ...STATUSES].map((s) => (
               <Button
                 key={s}
@@ -83,7 +83,7 @@ function WatchlistPage({ watchlist }) {
                 {s}
               </Button>
             ))}
-          </ButtonGroup>
+          </div>
 
           {visibleItems.length === 0 ? (
             <p className="text-muted">Nothing with the status "{filter}" yet.</p>
