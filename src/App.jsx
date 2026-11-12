@@ -6,6 +6,7 @@ import NavBar from './components/NavBar.jsx'
 import NotFoundPage from './pages/NotFoundPage.jsx'
 import DiscoverPage from './pages/DiscoverPage.jsx'
 import DetailsPage from './pages/DetailsPage.jsx'
+import WatchlistPage from './pages/WatchlistPage.jsx'
 import { useWatchlist } from './hooks/useWatchlist.js'
 
 // HashRouter is used instead of BrowserRouter because GitHub Pages
@@ -22,6 +23,7 @@ function App() {
         <Routes>
           <Route path="/" element={<DiscoverPage isSaved={watchlist.isSaved} />} />
           <Route path="/anime/:id" element={<DetailsPage watchlist={watchlist} />} />
+          <Route path="/watchlist" element={<WatchlistPage watchlist={watchlist} />} />
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </Container>

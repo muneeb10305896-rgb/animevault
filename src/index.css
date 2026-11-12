@@ -60,3 +60,30 @@ body {
   aspect-ratio: 3 / 4;
   object-fit: cover;
 }
+
+/* Watchlist screen */
+.chart-box {
+  position: relative;
+  height: 260px;
+}
+
+.watch-thumb {
+  width: 48px;
+  height: 68px;
+  object-fit: cover;
+}
+
+.watch-info {
+  min-width: 10rem;
+}
+
+.watch-select {
+  width: auto;
+}
+
+/* Small phones: let the selects share the row under the title */
+@media (max-width: 575px) {
+  .watch-select {
+    flex: 1 1 40%;
+  }
+}
