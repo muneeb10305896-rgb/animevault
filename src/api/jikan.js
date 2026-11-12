@@ -4,19 +4,45 @@
 
 const BASE_URL = 'https://api.jikan.moe/v4'
 
+const TIMEOUT_MS = 15000 // give up on a request after 15 seconds
+
+// Small pause, used before retrying a request
+const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms))
+
+// fetch with a time limit. Jikan is a free service and sometimes answers
+// very slowly, so without this the loading spinner could spin forever.
+async function fetchWithTimeout(url) {
+  const controller = new AbortController()
+  const timer = setTimeout(() => controller.abort(), TIMEOUT_MS)
+  try {
+    return await fetch(url, { signal: controller.signal })
+  } finally {
+    clearTimeout(timer)
+  }
+}
+
 // Shared helper: fetch a URL, check the status and return the parsed JSON.
 // Throws an Error with a readable message so the screens can show it to the user.
-async function getJson(path) {
+// Slow answers and "too many requests" (429) are retried once automatically.
+async function getJson(path, retry = true) {
   let response
   try {
-    response = await fetch(BASE_URL + path)
-  } catch {
+    response = await fetchWithTimeout(BASE_URL + path)
+  } catch (err) {
+    if (err.name === 'AbortError') {
+      if (retry) return getJson(path, false)
+      throw new Error('The anime database is responding very slowly right now. Please try again in a moment.')
+    }
     // fetch only throws when the network itself fails (offline, DNS, CORS)
     throw new Error('Could not reach the anime database. Check your internet connection.')
   }
 
   if (response.status === 429) {
     // Jikan allows about 3 requests per second
+    if (retry) {
+      await wait(1200)
+      return getJson(path, false)
+    }
     throw new Error('Too many requests right now. Wait a second and try again.')
   }
   if (response.status === 404) {
